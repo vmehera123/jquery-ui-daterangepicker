@@ -1,9 +1,3 @@
-# jQuery UI DateRangePicker
-
-A jQuery UI widget similar to the date range picker used in Google Analytics;
-supports multiple months, custom preset ranges and smart positioning;
-[ThemeRoller](http://jqueryui.com/themeroller/)-ready and mobile-friendly.
-
 To get started, checkout examples and API at http://tamble.github.io/jquery-ui-daterangepicker/
 
 ## Dependencies

@@ -1,0 +1,29 @@
+{
+  "name": "jquery-ui-daterangepicker",
+  "version": "1.0.0",
+  "description": "A jQuery UI widget similar to the date range picker used in Google Analytics; supports multiple months, custom preset ranges and smart positioning; [ThemeRoller](http://jqueryui.com/themeroller/)-ready and mobile-friendly.",
+  "main": "jquery.comiseo.daterangepicker.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vmehera123/jquery-ui-daterangepicker.git"
+  },
+  "keywords": [
+    "datepicker",
+    "jquery",
+    "jquery-ui"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vmehera123/jquery-ui-daterangepicker/issues"
+  },
+  "homepage": "https://github.com/vmehera123/jquery-ui-daterangepicker#readme",
+  "dependencies": {
+    "jquery": "^1.8.3",
+    "jquery-ui": "^1.12.1",
+    "moment": "^2.3.0"
+  }
+}

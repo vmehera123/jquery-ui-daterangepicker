@@ -16,3 +16,6 @@ Desktop.ini
 .project
 .buildpath
 .idea/
+
+node_modules
+bower_components

@@ -1,6 +1,6 @@
 /*!
  * jQuery UI date range picker widget
- * Copyright (c) 2017 Tamble, Inc.
+ * Copyright (c) 2016 Tamble, Inc.
  * Licensed under MIT (https://github.com/tamble/jquery-ui-daterangepicker/raw/master/LICENSE.txt)
  *
  * Depends:
@@ -14,7 +14,7 @@
 	var uniqueId = 0; // used for unique ID generation within multiple plugin instances
 
 	$.widget('comiseo.daterangepicker', {
-		version: '0.6.0-beta.1',
+		version: '0.5.0',
 
 		options: {
 			// presetRanges: array of objects; each object describes an item in the presets menu
@@ -44,6 +44,7 @@
 			open: null, // callback that executes when the dropdown opens
 			close: null, // callback that executes when the dropdown closes
 			change: null, // callback that executes when the date range changes
+			select: null, // callback that executes when the date range select
 			clear: null, // callback that executes when the clear button is used
 			cancel: null, // callback that executes when the cancel button is used
 			onOpen: null, // @deprecated callback that executes when the dropdown opens
@@ -53,7 +54,7 @@
 			datepickerOptions: { // object containing datepicker options. See http://api.jqueryui.com/datepicker/#options
 				numberOfMonths: 3,
 //				showCurrentAtPos: 1 // bug; use maxDate instead
-				maxDate: 0 // the maximum selectable date is today (also current month is displayed on the last position)
+				maxDate: 0, // the maximum selectable date is today (also current month is displayed on the last position)
 			}
 		},
 
@@ -120,8 +121,6 @@
 					icons: {
 						secondary: options.icon
 					},
-					icon: options.icon,
-					iconPosition: 'end',
 					label: options.initialText
 				});
 		}
@@ -144,8 +143,6 @@
 				icons: {
 					secondary: options.icon
 				},
-				icon: options.icon,
-				iconPosition: 'end',
 				label: options.initialText
 			});
 		}
@@ -169,8 +166,7 @@
 	 */
 	function buildPresetsMenu(classnameContext, options, onClick) {
 		var $self,
-			$menu,
-			menuItemWrapper;
+			$menu;
 
 		function init() {
 			$self = $('<div></div>')
@@ -178,18 +174,12 @@
 
 			$menu = $('<ul></ul>');
 
-			if ($.ui.menu.prototype.options.items === undefined) {
-				menuItemWrapper = {start: '<li><a href="#">', end: '</a></li>'};
-			} else {
-				menuItemWrapper = {start: '<li><div>', end: '</div></li>'};
-			}
-
 			$.each(options.presetRanges, function() {
-				$(menuItemWrapper.start + this.text + menuItemWrapper.end)
-				.data('dateStart', this.dateStart)
-				.data('dateEnd', this.dateEnd)
-				.click(onClick)
-				.appendTo($menu);
+				$('<li><a href="#">' + this.text + '</a></li>')
+					.data('dateStart', this.dateStart)
+					.data('dateEnd', this.dateEnd)
+					.click(onClick)
+					.appendTo($menu);
 			});
 
 			$self.append($menu);
@@ -276,8 +266,9 @@
 		}
 
 		function refresh() {
+			//fix selected past range scroll to current date
 			$self.datepicker('refresh');
-			$self.datepicker('setDate', null); // clear the selected date
+			// $self.datepicker('setDate', null); // clear the selected date
 		}
 
 		function reset() {
@@ -436,10 +427,11 @@
 			$container = $('<div></div>', {'class': classname + ' ' + classname + '-' + sides[hSide] + ' ui-widget ui-widget-content ui-corner-all ui-front'})
 				.append($('<div></div>', {'class': classname + '-main ui-widget-content'})
 					.append(presetsMenu.getElement())
-					.append(calendar.getElement()))
-				.append($('<div class="ui-helper-clearfix"></div>')
-					.append(buttonPanel.getElement()))
+					.append(calendar.getElement())
+				)
+				.append($('<div class="ui-helper-clearfix"></div>').append(buttonPanel.getElement()))
 				.hide();
+
 			$originalElement.hide().after(triggerButton.getElement());
 			$mask = $('<div></div>', {'class': 'ui-front ' + classname + '-mask'}).hide();
 			$('body').append($mask).append($container);
@@ -488,6 +480,18 @@
 		}
 
 		function formatRangeForDisplay(range) {
+			if (typeof range.start == "string") {
+				range.start = new Date(range.start);
+			}
+			if (typeof range.end == "string") {
+				range.end = new Date(range.end);
+			}
+			if (moment.isMoment(range.start)) {
+				range.start = moment(range.start).toDate();
+			}
+			if (moment.isMoment(range.end)) {
+				range.end = moment(range.end).toDate();
+			}
 			var dateFormat = options.dateFormat;
 			return $.datepicker.formatDate(dateFormat, range.start) + (+range.end !== +range.start ? options.rangeSplitter + $.datepicker.formatDate(dateFormat, range.end) : '');
 		}
@@ -589,7 +593,7 @@
 					hSide = (containerCenterX > triggerButtonCenterX) ? RIGHT : LEFT;
 					if (hSide !== prevHSide) {
 						if (options.mirrorOnCollision) {
-							last = (hSide === LEFT) ? presetsMenu : calendar;
+							last = (hSide === LEFT) ? calendar : presetsMenu;
 							$container.children().first().append(last.getElement());
 						}
 						$container.removeClass(classname + '-' + sides[prevHSide]);
@@ -666,6 +670,10 @@
 			instance._trigger('close', event, {instance: instance});
 		}
 
+		function select(event) {
+			instance._trigger("select", event, {instance: instance});
+		}
+
 		function toggle(event) {
 			if (isOpen) {
 				close(event);
@@ -703,6 +711,7 @@
 			getRange: getRange,
 			clearRange: clearRange,
 			reset: reset,
+			select: select,
 			enforceOptions: enforceOptions,
 			getContainer: getContainer
 		};
