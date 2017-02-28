@@ -1,3 +1,8 @@
+/*!
+ * Copyright (c) 2014 Tamble, Inc.
+ * Licensed under MIT (https://github.com/tamble/jquery-ui-daterangepicker/raw/master/LICENSE.txt)
+ */
+
 .comiseo-daterangepicker-triggerbutton.ui-button {
 	text-align: left;
 	min-width: 18em;
@@ -7,7 +12,7 @@
 	background-color: #ffffff;
 	border: solid 1px #dadada;
 	border-radius: 5px;
-	box-shadow: 0px 3px 7px 0 rgba(0, 0, 0, 0.35);
+	box-shadow: 0 3px 7px 0 rgba(0, 0, 0, 0.35);
 	padding: 5px;
 	position: absolute;
 }
@@ -26,19 +31,25 @@
 	filter: alpha(opacity = 0);
 }
 
+.comiseo-daterangepicker-calendar {
+	max-width: 300px;
+	width: 300px;
+}
+
+.month-calendar-in {
+
+}
+
 .comiseo-daterangepicker-presets,
 .comiseo-daterangepicker-calendar {
 	display: table-cell;
 	vertical-align: top;
-	height: 230px;
+	height: 260px;
 }
 
+.comiseo-daterangepicker-left .comiseo-daterangepicker-presets,
 .comiseo-daterangepicker-right .comiseo-daterangepicker-presets {
-	padding: 2px 7px 7px 2px;
-}
-
-.comiseo-daterangepicker-left .comiseo-daterangepicker-presets {
-	padding: 15px 2px 7px 7px;
+	padding: 15px 2px 7px 15px;
 }
 
 .ui-menu {
@@ -65,7 +76,8 @@
 
 .comiseo-daterangepicker-left .comiseo-daterangepicker-calendar {
 	border-right-width: 1px;
-	padding-right: 5px;
+	padding: 15px 7px 0;
+	transition: .15s ease-in;
 }
 
 .comiseo-daterangepicker-right .comiseo-daterangepicker-buttonpanel {
@@ -87,7 +99,29 @@
 	font-size: 12px;
 	padding: 12px 22px;
 }
-
+/*overwrite css for toggles plugin*/
+.toggle {
+	height: 35px !important;
+}
+.toggle .toggle-blob {
+	border-radius: 4px;
+}
+.toggle .toggle-blob {
+	background: #c0c6c9;
+}
+.toggle .toggle-on, .toggle .toggle-on.active,
+.toggle .toggle-off, .toggle .toggle-off.active {
+	background: #fff;
+	border: 1px solid #8e74c6;
+	border-radius: 4px;
+}
+.toggle .toggle-on, .toggle .toggle-off {
+	color: #333;
+	box-shadow: none;
+	font-size: 14px;
+	text-shadow: none;
+}
+/*end overwrite css toggles*/
 .comiseo-daterangepicker-buttonpanel > button.ui-priority-secondary:nth-child(2)  {
 	background-color: #ffffff;
 	border: solid 1px #d65d45;
@@ -128,4 +162,28 @@
 
 .ui-menu-item:hover {
 	box-shadow: 0 0 7px 0 rgba(0, 0, 0, .5);
+}
+
+.scroll_datepicker {
+	height: 300px;
+	overflow: scroll;
+}
+.ui-datepicker td a {
+	margin: 0 auto;
+}
+.ui-menu .ui-menu-item {
+	margin-bottom: 10px !important;
+}
+.comiseo-daterangepicker-calendar .ui-datepicker-multi .ui-datepicker-group table {
+	width: 266px;
+}
+.ui-datepicker-prev.ui-corner-all.ui-state-disabled,
+.ui-datepicker-next.ui-corner-all.ui-state-disabled {
+	display: none;
+}
+.months-calendar .ui-state-default {
+	margin-left: 0;
+}
+.months-calendar .ui-datepicker-calendar {
+	margin-left: 0 !important;
 }
